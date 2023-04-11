@@ -1,0 +1,86 @@
+<% layout('/layouts/boilerplate')%>
+<link rel="stylesheet" href="/stylesheets/scrollToTop.css" />
+<link
+    rel="stylesheet"
+    href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+/>
+<script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<a id="button"></a>
+<div id="map" style="width: 100%; height: 500px"></div>
+<a id="back2Top" title="Back to top" href="#">&#10148;</a>
+<h2 class="text-center py-3">
+    <img width="3%" src="/images/whiteSearch.png" alt="" srcset="" /> Find the
+    Best Crags!
+</h2>
+<div class="mb-3 ui-widget">
+    <input class="form-control" id="findCrag" placeholder="Search for crags" />
+</div>
+
+<% for(let crag of crags){ %>
+<div class="card mb-3 text-white bg-dark">
+    <div class="row">
+        <div class="col-md-4 d-flex">
+            <% if(crag.images.length){ %> <%
+            splitUrl=crag.images[0].url.split("/upload") %> <img
+            class="img-fluid"
+            src="<%=splitUrl[0].concat("/upload/q_15").concat(splitUrl[1])%> "
+            alt=""> <% }else{%>
+            <img
+                class="img-fluid"
+                src="https://img.freepik.com/free-vector/camping-hiking-nature-mountain-river-illustration_24519-911.jpg?size=338&ext=jpg"
+                alt=""
+            />
+            <% } %>
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title"><%=crag.title%></h5>
+                <small class="card-text text-muted"><%=crag.location%></small>
+                <p class="card-text"><%=crag.description%></p>
+                <!-- <p class="card-text">₹ <%=crag.price%>/night</p> -->
+                <a class="btn btn-primary" href="/crags/<%=crag._id%>">view</a>
+            </div>
+        </div>
+    </div>
+</div>
+<%}%>
+
+<script>
+    const crags={features: <%-JSON.stringify(crags)%>}
+    const mapToken='<%-process.env.MAPBOX_TOKEN%>';
+</script>
+
+<script src="/javascript/clusterMap.js"></script>
+<script src="/javascript/scroll.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#findCamp").autocomplete({
+            source: async function (req, res) {
+                let data = await fetch(`/search?term=${req.term}`)
+                    .then((results) => results.json())
+                    .then((results) =>
+                        results.map((result) => {
+                            return {
+                                label: result.title,
+                                value: result.title,
+                                id: result._id,
+                            };
+                        })
+                    );
+                res(data);
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                window.location.replace(
+                    `${window.location.href}/${ui.item.id}`
+                );
+            },
+        });
+    });
+</script>

@@ -1,0 +1,43 @@
+<% layout('/layouts/boilerplate')%>
+
+    <div class="text-white bg-dark pops">
+        <h1 class="text-center">Edit Crag</h1>
+        
+
+            <form action="/crags/<%=Crag._id%>?_method=PUT" method="post" class="needs-validation"
+                novalidate enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label mb-0" for="name">Title</label>
+                    <input class="form-control mb-2" type="text" id="name" value="<%=Crag.title%>"
+                        name="Crag[title]" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label mb-0" for="place">Location</label>
+                    <input class="form-control mb-2" type="text" id="place" value="<%=Crag.location%>"
+                        name="Crag[location]" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label mb-0" for="image">Add Images</label>
+                    <input class="form-control mb-2" type="file" id="image" name="image" multiple>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label mb-0" for="descirption">Description</label>
+                    <textarea class="form-control mb-2" type="text" id="description" required
+                        name="Crag[description]"><%=Crag.description%> </textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Delete</label><br>
+                    <% Crag.images.forEach((img,i)=>{ %>
+                        <label for="check-<%=i%> ">?</label>
+                        <input type="checkbox" name="deleteImages[]" value="<%=img.filename%>" id="check-<%=i%>">
+                        <img src="<%=img.thumbnail%>" class="img-thumbnail" alt=""><br>
+                        <% }) %>
+                </div>
+<div class="d-grid">
+    <button class="btn btn-info rounded-pill text-white">Update Crag</button>
+</div>
+                
+            </form>
+        </div>
+    </div>
+    <script src="/javascript/validator.js"></script>

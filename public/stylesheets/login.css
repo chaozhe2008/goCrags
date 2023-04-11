@@ -1,0 +1,39 @@
+.git{
+    text-decoration: none;
+    color:rgba(255,255,255,0.5);
+}
+.git:hover{
+color: white;
+}
+.card{
+    border-radius: 5%;
+    width:30%;
+    margin-bottom: 1%;
+    margin-top: 5%;
+}
+.register{
+    width:40%
+}
+.card-body{
+    border-radius: 5%;
+}
+
+img{
+    border-radius: 5%  
+}
+.btn-block{
+    margin-bottom: 5%;
+    margin-top: 5%;
+}
+footer{
+    margin-top: auto;
+}
+@media only screen and (max-width:1000px){
+    .card{
+        width:80%
+    }
+    img{
+    display: none;
+    }
+    
+}
